@@ -21,7 +21,8 @@ const contract = {
 };
 
 export default function App() {
-  const [connected, setConnected] = useState(false);
+  const [swapping, setSwapping] = useState(false);
+  const [done, setDone] = useState(false);
 
   const [fromToken, setFromToken] = useState(contract["tokenA"]);
   const [toToken, setToToken] = useState(contract["tokenB"]);
@@ -31,9 +32,21 @@ export default function App() {
 
   const [balance, setBalance] = useState(6000);
 
-  const handleSwap = async () => {
+  const handleSwap = async (e) => {
     e.preventDefault();
-    console.log("swap handled");
+    console.log("swapping started");
+    setSwapping(true);
+    const swapDelay = setTimeout(() => {
+      setSwapping(false);
+      setDone(true);
+    }, 4000);
+    const doneDelay = setTimeout(() => {
+      setDone(false);
+    }, 1000);
+    return () => {
+      clearTimeout(swapDelay);
+      clearTimeout(doneDelay);
+    };
   };
 
   const handleSwapInputOutput = async (e) => {
@@ -93,7 +106,7 @@ export default function App() {
                 <Cog8ToothIcon className="h-5 float-right flex-none" />
               </div>
             </div>
-            <form onSubmit={handleSwap} className="p-6 ">
+            <form onSubmit={(e) => handleSwap(e)} className="p-6 ">
               <div className="grid grid-flow-col grid-cols-2 space-x-2 p-0.5 rounded-md thin-border">
                 <div className="rounded-md p-2 grid grid-flow-col grid-cols-3 space-x-2 ps-1 pe-5 bg-zinc-800">
                   <div className="grid place-content-center">
@@ -155,12 +168,33 @@ export default function App() {
               </div>
 
               <div className="mt-10 w-full">
-                <button
-                  href="#"
-                  className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm font-semibold text-white shadow-sm w-full hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Swap
-                </button>
+                {!swapping ? (
+                  <button
+                    role="submit"
+                    disabled={swapping}
+                    href="#"
+                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm font-semibold text-white shadow-sm w-full hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Swap
+                  </button>
+                ) : done ? (
+                  <button
+                    href="#"
+                    disabled="true"
+                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm  font-semibold text-white shadow-sm w-full hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    <p>Swapping...</p>
+                  </button>
+                ) : (
+                  <button
+                    disabled="true"
+                    role="submit"
+                    href="#"
+                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm  font-semibold text-white shadow-sm w-full hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Swap Complete
+                  </button>
+                )}
               </div>
             </form>
           </div>
