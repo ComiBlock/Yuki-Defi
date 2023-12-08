@@ -2,10 +2,8 @@ import { useState } from "react";
 import {
   ArrowsUpDownIcon,
   Cog8ToothIcon,
-  CurrencyDollarIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-import { toTwoDecimalPlaces } from "./utils/utils";
 
 const contract = {
   tokenA: {
@@ -28,8 +26,8 @@ export default function App() {
   const [fromToken, setFromToken] = useState(contract["tokenA"]);
   const [toToken, setToToken] = useState(contract["tokenB"]);
 
-  const [inputValue, setInputValue] = useState(0.0);
-  const [outputValue, setOutputValue] = useState(0.0);
+  const [inputValue, setInputValue] = useState("0.00");
+  const [outputValue, setOutputValue] = useState("0.00");
 
   const [balance, setBalance] = useState(6000);
 
@@ -116,7 +114,7 @@ export default function App() {
                   name=""
                   id=""
                   className="w-full h-full bg-transparent border-0 text-end focus:ring-0 px-5"
-                  value={toTwoDecimalPlaces(inputValue)}
+                  value={inputValue}
                   onChange={(e) => {
                     setInputValue(e.target.value);
                   }}
@@ -124,7 +122,7 @@ export default function App() {
               </div>
               <div className="my-3 grid-cols-none">
                 <div className="h-9 rounded-full  bg-zinc-800 flex place-items-center p-2.5 w-fit mx-auto hover:bg-zinc-700">
-                  <button onClick={handleSwapInputOutput}>
+                  <button onClick={(e) => handleSwapInputOutput(e)}>
                     <ArrowsUpDownIcon className=" object-contain h-5" />
                   </button>
                 </div>
@@ -149,7 +147,7 @@ export default function App() {
                   name=""
                   id=""
                   className="w-full h-full bg-transparent border-0 text-end focus:ring-0 px-5"
-                  value={toTwoDecimalPlaces(outputValue)}
+                  value={outputValue}
                   onChange={(e) => {
                     setOutputValue(e.target.value);
                   }}
