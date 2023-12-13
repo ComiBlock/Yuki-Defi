@@ -2,7 +2,7 @@ import { Wallet, providers, utils } from "ethers";
 
 import { Mento } from "@mento-protocol/mento-sdk";
 
-async function getCelotoCUSDQuote(amount){
+export async function getCelotoCUSDQuote(amount){
 
   const provider = new providers.JsonRpcProvider(
     "https://alfajores-forno.celo-testnet.org"
@@ -154,6 +154,6 @@ async function swapCUSDtoCelo(amount) {
   console.log("tx receipt: ", swapTxReceipt);
 }
 
-main()
-  .then(() => console.log("Done! 🚀"))
-  .catch((e) => console.log("Error: ", e));
+// main()
+//   .then(() => console.log("Done! 🚀"))
+//   .catch((e) => console.log("Error: ", e));
