@@ -10,7 +10,7 @@ import {
   getCUSDtoCeloQuote,
   swapCUSDtoCelo,
   swapCelotoCUSD,
-} from "../../YukiCelo/index";
+} from "../api/api";
 
 const contract = {
   tokenA: {
@@ -51,6 +51,8 @@ export default function App() {
       setBalance(balance + 2.31);
       setSwapping(false);
       setDone(true);
+      setInputValue("0.00");
+      setOutputValue("0.00");
     }, [2000]);
     console.log("settign swapping to false");
   };
