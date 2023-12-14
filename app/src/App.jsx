@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowsUpDownIcon,
   Cog8ToothIcon,
   ChevronRightIcon,
+  CheckIcon
 } from "@heroicons/react/24/outline";
+import  {getCelotoCUSDQuote, getCUSDtoCeloQuote, swapCUSDtoCelo, swapCelotoCUSD}  from "../../YukiCelo/index";
 
 const contract = {
   tokenA: {
@@ -23,7 +25,10 @@ const contract = {
 export default function App() {
   const [swapping, setSwapping] = useState(false);
   const [done, setDone] = useState(false);
+  const [fetchingQuote, setFetchingQuote] = useState(false);
 
+
+  const [direction, setDirection] = useState(contract["AtoB"]);
   const [fromToken, setFromToken] = useState(contract["tokenA"]);
   const [toToken, setToToken] = useState(contract["tokenB"]);
 
@@ -39,7 +44,7 @@ export default function App() {
     const swapDelay = setTimeout(() => {
       setSwapping(false);
       setDone(true);
-    }, 4000);
+    }, 3000);
     const doneDelay = setTimeout(() => {
       setDone(false);
     }, 1000);
@@ -48,6 +53,10 @@ export default function App() {
       clearTimeout(doneDelay);
     };
   };
+
+  useEffect(()=> {
+    getCelotoCUSDQuote(4000)
+  },[])
 
   const handleSwapInputOutput = async (e) => {
     e.preventDefault();
@@ -63,7 +72,7 @@ export default function App() {
     <div className="isolate bg-zinc-950 h-[100svh] w-[100svw] overflow-hidden flex place-items-center justify-center">
       <div
         className="absolute inset-x-0 -bottom-0 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-        aria-hidden="true"
+        aria-hidden={true}
       >
         <div
           className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ddff80] to-[#2cec6c] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
@@ -94,7 +103,6 @@ export default function App() {
                 alt="celo balance"
                 className="rounded-full h-4 my-auto font-bold ms-1"
               />
-              {/* <CurrencyDollarIcon className="h-5 my-auto font-bold ms-1" /> */}
             </p>
           </nav>
         </header>
@@ -113,7 +121,7 @@ export default function App() {
                     <img
                       src={fromToken.image}
                       alt=""
-                      srcset=""
+                      srcSet=""
                       className="my-auto rounded-full"
                     />
                   </div>
@@ -127,9 +135,13 @@ export default function App() {
                   name=""
                   id=""
                   className="w-full h-full bg-transparent border-0 text-end focus:ring-0 px-5"
-                  value={inputValue}
-                  onChange={(e) => {
-                    setInputValue(e.target.value);
+                  value={direction === "AtoB"? inputValue : outputValue
+                }
+                  onChange={ async (e) => { 
+                    
+                      setInputValue(e.target.value);
+                      setOutputValue(await getCelotoCUSDQuote(inputValue))
+                    
                   }}
                 />
               </div>
@@ -146,7 +158,7 @@ export default function App() {
                     <img
                       src={toToken.image}
                       alt=""
-                      srcset=""
+                      srcSet=""
                       className="my-auto rounded-full"
                     />
                   </div>
@@ -173,26 +185,32 @@ export default function App() {
                     role="submit"
                     disabled={swapping}
                     href="#"
-                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm font-semibold text-white shadow-sm w-full hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm font-semibold text-white shadow-sm w-full hover:bg-[#9747ff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Swap
                   </button>
                 ) : done ? (
                   <button
                     href="#"
-                    disabled="true"
-                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm  font-semibold text-white shadow-sm w-full hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    disabled={true}
+                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm  font-semibold text-white shadow-sm w-full hover:bg-[#9747ff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    <p>Swapping...</p>
+                    <div role="status">
+                      <svg aria-hidden={true} class="inline w-4 h-4 p-0 text-white animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                          <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                      </svg>
+                      <span class="sr-only">Loading...</span>
+                  </div>
                   </button>
                 ) : (
                   <button
-                    disabled="true"
+                    disabled={true}
                     role="submit"
                     href="#"
-                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm  font-semibold text-white shadow-sm w-full hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm  font-semibold text-white shadow-sm w-full  focus-visible:outline focus-visible:outline-2  focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Swap Complete
+                    <CheckIcon className="h-5 w-5 mx-auto"/>
                   </button>
                 )}
               </div>
@@ -202,7 +220,7 @@ export default function App() {
       </div>
       <div className="inline-flex absolute bottom-0 justify-start overflow-hidden w-full p-4 lg:px-8">
         <p className="text-white bg-zinc-800 px-3 py-1 rounded-2xl inline-flex text-sm">
-          Powerd by <span className="text-[#9747ff] font-bold ms-1"> Yuki</span>{" "}
+          Built for MiniPay <span className="text-[#9747ff] font-bold ms-1"> <img src="https://cdn-production-opera-website.operacdn.com/staticfiles/assets/images/logo/logo-flat.724a32ec0873.svg" className="h-5 w-5 my-auto ms-1" alt="" srcSet="" /></span>{" "}
           <ChevronRightIcon className="h-5 my-auto font-bold" />
         </p>
       </div>
