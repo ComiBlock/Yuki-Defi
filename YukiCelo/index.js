@@ -39,6 +39,34 @@ async function getCelotocEURQuote(amount) {
 
 }
 
+async function getcEURtoCeloQuote(amount) {
+
+  const provider = new providers.JsonRpcProvider(
+    "https://alfajores-forno.celo-testnet.org"
+  );
+  const mento = await Mento.create(provider);
+
+  const celoTokenAddr = "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9";
+  const cEURTokenAddr = "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F";
+  const tokenUnits = 18;
+
+  // how much cEUR can I get for 1 CELO?
+  const amountIn = utils.parseUnits(`${amount}`, tokenUnits);
+  const quoteAmountOut = await mento.getAmountOut(
+    cEURTokenAddr,
+    celoTokenAddr,
+    amountIn
+  );
+
+  console.log(
+    `~${utils.formatUnits(
+      quoteAmountOut,
+      tokenUnits
+    )} CELO in exchange for ${amount} cEUR`
+  );
+
+}
+
 async function getCelotoeXOFQuote(amount) {
 
   const provider = new providers.JsonRpcProvider(
@@ -63,6 +91,34 @@ async function getCelotoeXOFQuote(amount) {
       quoteAmountOut,
       tokenUnits
     )} eXOF in exchange for ${amount} CELO`
+  );
+
+}
+
+async function geteXOFtoCeloQuote(amount) {
+
+  const provider = new providers.JsonRpcProvider(
+    "https://alfajores-forno.celo-testnet.org"
+  );
+  const mento = await Mento.create(provider);
+
+  const celoTokenAddr = "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9";
+  const eXOFTokenAddr = "0xB0FA15e002516d0301884059c0aaC0F0C72b019D";
+  const tokenUnits = 18;
+
+  // how much cEUR can I get for 1 CELO?
+  const amountIn = utils.parseUnits(`${amount}`, tokenUnits);
+  const quoteAmountOut = await mento.getAmountOut(
+    eXOFTokenAddr,
+    celoTokenAddr,
+    amountIn
+  );
+
+  console.log(
+    `~${utils.formatUnits(
+      quoteAmountOut,
+      tokenUnits
+    )} CELO in exchange for ${amount} eXOF`
   );
 
 }
@@ -93,7 +149,36 @@ async function getCelotocREALQuote(amount) {
       )} cReal in exchange for ${amount} CELO`
     );
   
-  }
+}
+
+
+async function getcREALtoCeloQuote(amount) {
+
+  const provider = new providers.JsonRpcProvider(
+    "https://alfajores-forno.celo-testnet.org"
+  );
+  const mento = await Mento.create(provider);
+
+  const celoTokenAddr = "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9";
+  const cRealTokenAddr = "0xE4D517785D091D3c54818832dB6094bcc2744545";
+  const tokenUnits = 18;
+
+  // how much cREAL can I get for 1 CELO?
+  const amountIn = utils.parseUnits(`${amount}`, tokenUnits);
+  const quoteAmountOut = await mento.getAmountOut(
+    cRealTokenAddr,
+    celoTokenAddr,
+    amountIn
+  );
+
+  console.log(
+    `~${utils.formatUnits(
+      quoteAmountOut,
+      tokenUnits
+    )} CELO in exchange for ${amount} cREAL`
+  );
+
+}
 
 async function getCelotoCUSDQuote(amount){
 
@@ -566,6 +651,10 @@ async function swapcREALtoCelo(amount) {
 
 
 //getCelotocREALQuote(10)
-getCelotocEURQuote(10)
+//getCelotocEURQuote(10)
 //getCelotoCUSDQuote(10)
 //getCelotoeXOFQuote(10)
+getcEURtoCeloQuote(10)
+//geteXOFtoCeloQuote(10)
+//getcREALtoCeloQuote(10)
+//getCelotoCUSDQuote(10)
