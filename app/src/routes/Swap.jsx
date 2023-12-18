@@ -8,29 +8,13 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import Header from "../components/Header";
-import {
-  getCelotocEURQuote,
-  getCelotoCUSDQuote,
-  getCUSDtoCeloQuote,
-  getCelotoeXOFQuote,
-  getCelotocREALQuote,
-  swapCUSDtoCelo,
-  swapCelotoCUSD,
-  swapCelotocEUR,
-  swapcEURToCelo,
-  swapCelotoeXOF,
-  swapeXOFtoCelo,
-  swapCelotocREAL,
-  swapcREALtoCelo,
-} from "../api/api";
 import { contracts } from "../utils/data";
 
 export default function Swap() {
-  // const [selected, setSelected] = useState(contracts[0]);
-
   const [swapping, setSwapping] = useState(false);
   const [done, setDone] = useState(false);
   const [fetchingQuote, setFetchingQuote] = useState(false);
+  const [error, setError] = useState(undefined)
 
   const [inputToken, setInputToken] = useState(contracts[0]);
   const [outputToken, setOutputToken] = useState(inputToken.pairs[0]);
@@ -38,15 +22,37 @@ export default function Swap() {
   const [outputValue, setOutputValue] = useState(0);
   const [balance, setBalance] = useState(7);
 
-  const handleSwap = async (e, inputValue) => {
+  const handleSwap = (e) => {
     e.preventDefault();
-    setSwapping(true);
-    setBalance(balance + 2.31);
-    setSwapping(false);
-    setDone(true);
-    setInputValue("0.00");
-    setOutputValue("0.00");
+      setSwapping(true);
+      setTimeout(()=>{
+        setSwapping(false)
+        setDone(true)
+      },[500])
+      setDone(false)
+      setSwapping(false)
+      // setTimeout(()=>{setSwapping(false)},[])
+      // setTimeout(()=>{},[])
+
   };
+
+  // const handleSwap = async (e) => {
+  //   e.preventDefault();
+
+  //   if (outputValue){
+  //     setSwapping(true);
+  //     try {
+  //       const result = await outputToken.swap(outputValue)
+  //       setDone(true);
+  //       setSwapping(false);
+  //     } catch (error) {
+  //       setError(error)
+  //     }finally{
+  //       setInputValue(0);
+  //       setOutputValue(0);
+  //     }
+  //   }
+  // };
 
   const handleInputToken = async (e) => {
     setInputToken(e);
@@ -54,7 +60,6 @@ export default function Swap() {
 
   const handleOutputToken = async (e) => {
     setOutputToken(e);
-    // console.log(outputToken);
   };
 
   const handleInputValue = async (e) => {
@@ -78,7 +83,6 @@ export default function Swap() {
   }, [outputToken]);
 
   useEffect(() => {
-    console.log(outputToken);
     const fetchOutputQuote = async () => {
       setFetchingQuote(true);
       const inputNumber = parseFloat(inputValue);
@@ -121,7 +125,7 @@ export default function Swap() {
                 <Cog8ToothIcon className="h-5 float-right flex-none" />
               </div>
             </div>
-            <form onSubmit={(e) => handleSwap(e, inputValue)} className="p-6 ">
+            <form onSubmit={(e) => handleSwap(e)} className="p-6 ">
               {/* INPUT */}
               <div className="grid grid-flow-col grid-cols-2 space-x-2 p-0.5 rounded-md thin-border">
                 <div className="rounded-md grid grid-flow-col  space-x-2  bg-zinc-800">
@@ -323,7 +327,16 @@ export default function Swap() {
                   >
                     Swap
                   </button>
-                ) : (
+                ) : !done? (
+                  <button
+                    disabled={true}
+                    role="submit"
+                    href="#"
+                    className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm  font-semibold text-white shadow-sm w-full  focus-visible:outline focus-visible:outline-2  focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    <CheckIcon className="h-5 w-5 mx-auto" />
+                  </button>
+              ):(
                   <button
                     href="#"
                     disabled={true}
@@ -332,7 +345,7 @@ export default function Swap() {
                     <div role="status">
                       <svg
                         aria-hidden={true}
-                        class="inline w-4 h-4 p-0 text-white animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
+                        className="inline w-4 h-4 p-0 text-white animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
                         viewBox="0 0 100 101"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -346,20 +359,19 @@ export default function Swap() {
                           fill="currentFill"
                         />
                       </svg>
-                      <span class="sr-only">Loading...</span>
+                      <span className="sr-only">Loading...</span>
                     </div>
                   </button>
-                  // ) : (
-                  //   <button
-                  //     disabled={true}
-                  //     role="submit"
-                  //     href="#"
-                  //     className="rounded-md bg-[#9747ff] px-3.5 py-3 text-sm  font-semibold text-white shadow-sm w-full  focus-visible:outline focus-visible:outline-2  focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  //   >
-                  //     <CheckIcon className="h-5 w-5 mx-auto" />
-                  //   </button>
-                )}
+                  ) }
               </div>
+
+             { error?.length && <div className="mt-4">
+              <p className="text-white bg-zinc-800 px-3 py-1 rounded-2xl inline-flex text-xs border border-red-600">
+          <span className="text-red-600 font-bold mx-1 text-xs">
+            Error:          </span>{" "}
+          {error}
+        </p>
+              </div>}
             </form>
           </div>
         </div>

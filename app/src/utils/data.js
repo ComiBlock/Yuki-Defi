@@ -39,7 +39,7 @@ const cEURO = {
 const eXOF = {
   marker: "cXOF",
   image:
-    "https://www.unlock-bc.com/wordpress/wp-content/uploads/2021/02/celo-hero-d01ebe97d7785ea9457ea9cca927622a-780x470.png",
+    "https://app.mento.org/_next/static/media/eXOF.96a9bf26.svg",
 };
 
 const cREAL = {
@@ -77,7 +77,7 @@ export const contracts = [
   {
     marker: "cXOF",
     image:
-      "https://media.licdn.com/dms/image/D4D03AQG6yj3du_8CqQ/profile-displayphoto-shrink_100_100/0/1699560835172?e=1708560000&v=beta&t=G9S3oQAtkTxrOGGn_kEFzKsINwKshmC7Y_LduSkwTmE",
+    "https://app.mento.org/_next/static/media/eXOF.96a9bf26.svg",
     pairs: [{ ...Celo, getQuote: geteXOFtoCeloQuote, swap: swapeXOFtoCelo }],
   },
   {
