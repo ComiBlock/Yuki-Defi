@@ -1,5 +1,5 @@
-import { useEffect, useImmer } from "react";
-import { Fragment, useState } from "react";
+import { useEffect,  Fragment, useState  } from "react";
+import { ethers } from "ethers";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import {
@@ -22,37 +22,23 @@ export default function Swap() {
   const [outputValue, setOutputValue] = useState(0);
   const [balance, setBalance] = useState(7);
 
-  const handleSwap = (e) => {
+
+  const handleSwap = async (e) => {
     e.preventDefault();
+    if (outputValue){
       setSwapping(true);
-      setTimeout(()=>{
-        setSwapping(false)
-        setDone(true)
-      },[500])
-      setDone(false)
-      setSwapping(false)
-      // setTimeout(()=>{setSwapping(false)},[])
-      // setTimeout(()=>{},[])
-
+      try {
+        const result = await outputToken.swap(outputValue)
+        setDone(true);
+        setSwapping(false);
+      } catch (error) {
+        setError(error)
+      }finally{
+        setInputValue(0);
+        setOutputValue(0);
+      }
+    }
   };
-
-  // const handleSwap = async (e) => {
-  //   e.preventDefault();
-
-  //   if (outputValue){
-  //     setSwapping(true);
-  //     try {
-  //       const result = await outputToken.swap(outputValue)
-  //       setDone(true);
-  //       setSwapping(false);
-  //     } catch (error) {
-  //       setError(error)
-  //     }finally{
-  //       setInputValue(0);
-  //       setOutputValue(0);
-  //     }
-  //   }
-  // };
 
   const handleInputToken = async (e) => {
     setInputToken(e);
@@ -70,6 +56,17 @@ export default function Swap() {
   const handleOutputValue = async (e) => {
     setOutputValue(e);
   };
+
+  useEffect(()=>{
+    // Ensure MiniPay provider is available
+    if (window.ethereum && window.ethereum.isMiniPay) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+    } else {
+      console.error("MiniPay provider not detected");
+    }
+
+  },[])
+
 
   useEffect(() => {
     setOutputToken(inputToken.pairs[0]);

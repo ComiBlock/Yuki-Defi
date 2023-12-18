@@ -207,7 +207,8 @@ export async function getCelotoCUSDQuote(amount) {
   return utils.formatUnits(quoteAmountOut);
 }
 
-export async function getCUSDtoCeloQuote(amount) {
+export async function getCUSDtoCeloQuote(amount){
+
   const provider = new providers.JsonRpcProvider(
     "https://alfajores-forno.celo-testnet.org"
   );
@@ -217,23 +218,26 @@ export async function getCUSDtoCeloQuote(amount) {
   const cUSDTokenAddr = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
   const tokenUnits = 18;
 
-  // how much cUSD do I need to buy 1 CELO?
-  const amountOut = utils.parseUnits(`$`, tokenUnits);
-  const quoteAmountIn = await mento.getAmountIn(
+  // how much cUSD can I get for 1 CELO?
+  const amountIn = utils.parseUnits(`${amount}`, tokenUnits);
+  const quoteAmountOut = await mento.getAmountOut(
     cUSDTokenAddr,
     celoTokenAddr,
-    amountOut
+    amountIn
   );
 
   console.log(
     `~${utils.formatUnits(
-      quoteAmountIn,
+      quoteAmountOut,
       tokenUnits
-    )} cUSD needed to buy ${amount} CELO`
+    )} Celo in exchange for ${amount} CUSD`
   );
 
   return utils.formatUnits(quoteAmountOut);
+
 }
+
+
 
 /*
 
