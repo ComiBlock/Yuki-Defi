@@ -288,9 +288,14 @@ async function swapCelotoCUSD(amount) {
     amountIn,
     expectedAmountOut
   );
+  try {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  } catch (error) {
+    console.log("error: ", error);
+  }
+  
 }
 
 async function swapCUSDtoCelo(amount) {
@@ -337,9 +342,14 @@ async function swapCUSDtoCelo(amount) {
     amountIn,
     expectedAmountOut
   );
+  try {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  } catch (error) {
+    console.log("error: ", error);
+  }
+  
 }
 
 /*
@@ -392,9 +402,15 @@ async function swapCelotocEUR(amount) {
     amountIn,
     expectedAmountOut
   );
+  try {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+
+  } catch (error) {
+    console.log("error", error);
+  }
+  
 }
 
 async function swapcEURToCelo(amount) {
@@ -441,9 +457,13 @@ async function swapcEURToCelo(amount) {
     amountIn,
     expectedAmountOut
   );
+  try {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  } catch (error) {
+    console.log("error", error)
+  }
 }
 
 /*
@@ -496,9 +516,14 @@ async function swapCelotoeXOF(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+  } catch (error) {
+    console.log("error", error)
+  }
+
 }
 
 async function swapeXOFtoCelo(amount) {
@@ -545,9 +570,14 @@ async function swapeXOFtoCelo(amount) {
     amountIn,
     expectedAmountOut
   );
+  try {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  } catch (error) {
+    console.log("error", error)
+  }
+  
 }
 
 /*
@@ -600,9 +630,15 @@ async function swapCelotocREAL(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    
+  } catch (error) {
+    console.log("error: ", error);
+  }
+ 
 }
 
 async function swapcREALtoCelo(amount) {
@@ -649,9 +685,13 @@ async function swapcREALtoCelo(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
@@ -664,4 +704,8 @@ async function swapcREALtoCelo(amount) {
 //geteXOFtoCeloQuote(10)
 //getcREALtoCeloQuote(10)
 //getCelotoCUSDQuote(10)
-getCUSDtoCeloQuote(10)
+//getCUSDtoCeloQuote(10)
+
+//swapCelotocEUR(1)
+//swapCUSDtoCelo(2)
+swapCelotocEUR(1)
