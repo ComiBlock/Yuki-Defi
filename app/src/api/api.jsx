@@ -401,12 +401,14 @@ export async function swapCelotocEUR(amount) {
 
   console.log("Swapping CELO for cEUR...");
   const expectedAmountOut = quoteAmountOut.mul(99).div(100); // allow 1% slippage from quote
+  console.log(expectedAmountOut);
   const swapTxObj = await mento.swapIn(
     celoTokenAddr,
     cEURTokenAddr,
     amountIn,
     expectedAmountOut
   );
+  console.log(swapTxObj);
   try {
     const swapTx = await signer.sendTransaction(swapTxObj);
     const swapTxReceipt = await swapTx.wait();

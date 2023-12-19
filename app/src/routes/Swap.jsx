@@ -30,13 +30,33 @@ export default function Swap() {
         const updateOutputCoin = update[outputToken.marker];
 
         const result = await outputToken.swap(outputValue);
-        console.log(Number(result) / Math.pow(10, 8));
-        updateInputCoin(
-          balances[inputToken.marker] -
-            Number(inputValue) -
-            Number(result) / Math.pow(10, 8)
+        const oldInputBalance =
+          localStorage.getItem(`${inputToken.marker}`) ||
+          balances[inputToken.marker];
+        const oldOutputBalance =
+          localStorage.getItem(`${outputToken.marker}`) ||
+          balances[outputToken.marker];
+        const inputBalance =
+          oldInputBalance -
+          Number(inputValue) -
+          Number(result) / Math.pow(10, 8);
+        const outputBalance = oldOutputBalance + Number(outputValue);
+        alert(
+          `Swap successful. Your ${
+            inputToken.marker
+          } balance is ${inputBalance.toFixed(2)}. 
+          Your ${outputToken.marker} balance is ${outputBalance.toFixed(2)}`
         );
-        updateOutputCoin(balances[outputToken.marker] + Number(outputValue));
+        localStorage.setItem(
+          `${inputToken.marker}`,
+          `${inputBalance.toFixed(2)}`
+        );
+        localStorage.setItem(
+          `${outputToken.marker}`,
+          `${outputBalance.toFixed(2)}`
+        );
+        updateInputCoin(inputBalance);
+        updateOutputCoin(outputBalance);
         setDone(true);
         setSwapping(false);
       } catch (error) {
@@ -150,7 +170,8 @@ export default function Swap() {
                             </div>
                             <div className="">
                               <p className="text-xs">
-                                {balances[inputToken.marker].toFixed(2)}
+                                {localStorage.getItem(`${inputToken.marker}`) ||
+                                  balances[inputToken.marker].toFixed(2)}
                               </p>
                             </div>
                             <div className="col-span-2">
@@ -250,7 +271,9 @@ export default function Swap() {
                             </div>
                             <div className="">
                               <p className="text-xs">
-                                {balances[outputToken.marker].toFixed(2)}
+                                {localStorage.getItem(
+                                  `${outputToken.marker}`
+                                ) || balances[outputToken.marker].toFixed(2)}
                               </p>
                             </div>
                             <div className="col-span-2">
