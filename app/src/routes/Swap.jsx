@@ -20,7 +20,6 @@ export default function Swap() {
   const [outputToken, setOutputToken] = useState(inputToken.pairs[0]);
   const [inputValue, setInputValue] = useState(0);
   const [outputValue, setOutputValue] = useState(0);
-  const [balance, setBalance] = useState(7);
 
   const handleSwap = async (e) => {
     e.preventDefault();
