@@ -1,4 +1,4 @@
-import { Wallet, providers, utils } from "ethers";
+import { Wallet, providers, utils, BigNumber } from "ethers";
 
 import { Mento } from "@mento-protocol/mento-sdk";
 
@@ -292,6 +292,11 @@ async function swapCelotoCUSD(amount) {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  const gasUsed = await swapTxReceipt.gasUsed
+  const gasValue = BigNumber.from(gasUsed).toString();
+  console.log("gas value: ", gasValue);
+  return gasValue;
+
   } catch (error) {
     console.log("error: ", error);
   }
@@ -346,6 +351,11 @@ async function swapCUSDtoCelo(amount) {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  const gasUsed = await swapTxReceipt.gasUsed
+  const gasValue = BigNumber.from(gasUsed).toString();
+  console.log("gas value: ", gasValue);
+  return gasValue;
+
   } catch (error) {
     console.log("error: ", error);
   }
@@ -406,6 +416,10 @@ async function swapCelotocEUR(amount) {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  const gasUsed = await swapTxReceipt.gasUsed
+  const gasValue = BigNumber.from(gasUsed).toString();
+  console.log("gas value: ", gasValue);
+  return gasValue;
 
   } catch (error) {
     console.log("error", error);
@@ -461,6 +475,11 @@ async function swapcEURToCelo(amount) {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  const gasUsed = await swapTxReceipt.gasUsed
+  const gasValue = BigNumber.from(gasUsed).toString();
+  console.log("gas value: ", gasValue);
+  return gasValue;
+
   } catch (error) {
     console.log("error", error)
   }
@@ -520,6 +539,11 @@ async function swapCelotoeXOF(amount) {
     const swapTx = await signer.sendTransaction(swapTxObj);
     const swapTxReceipt = await swapTx.wait();
     console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed
+  const gasValue = BigNumber.from(gasUsed).toString();
+  console.log("gas value: ", gasValue);
+  return gasValue;
+
   } catch (error) {
     console.log("error", error)
   }
@@ -574,6 +598,11 @@ async function swapeXOFtoCelo(amount) {
   const swapTx = await signer.sendTransaction(swapTxObj);
   const swapTxReceipt = await swapTx.wait();
   console.log("tx receipt: ", swapTxReceipt);
+  const gasUsed = await swapTxReceipt.gasUsed
+  const gasValue = BigNumber.from(gasUsed).toString();
+  console.log("gas value: ", gasValue);
+  return gasValue;
+
   } catch (error) {
     console.log("error", error)
   }
@@ -634,6 +663,11 @@ async function swapCelotocREAL(amount) {
     const swapTx = await signer.sendTransaction(swapTxObj);
     const swapTxReceipt = await swapTx.wait();
     console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed
+  const gasValue = BigNumber.from(gasUsed).toString();
+  console.log("gas value: ", gasValue);
+  return gasValue;
+
     
   } catch (error) {
     console.log("error: ", error);
@@ -689,9 +723,14 @@ async function swapcREALtoCelo(amount) {
     const swapTx = await signer.sendTransaction(swapTxObj);
     const swapTxReceipt = await swapTx.wait();
     console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
   } catch (error) {
     console.log(error);
   }
+  
 }
 
 
