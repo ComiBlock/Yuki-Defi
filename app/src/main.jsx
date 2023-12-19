@@ -3,8 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Swap from "./routes/Swap";
-
-import TryPage from "./Routes/TryPage";
+import TryPage from "./routes/TryPage";
 
 const router = createBrowserRouter([
   {
