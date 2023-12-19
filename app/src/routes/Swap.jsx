@@ -1,4 +1,4 @@
-import { useEffect,  Fragment, useState  } from "react";
+import { useEffect, Fragment, useState } from "react";
 import { ethers } from "ethers";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
@@ -8,13 +8,13 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import Header from "../components/Header";
-import { contracts } from "../utils/data";
+import { balances, contracts, update } from "../utils/data";
 
 export default function Swap() {
   const [swapping, setSwapping] = useState(false);
   const [done, setDone] = useState(false);
   const [fetchingQuote, setFetchingQuote] = useState(false);
-  const [error, setError] = useState(undefined)
+  const [error, setError] = useState(undefined);
 
   const [inputToken, setInputToken] = useState(contracts[0]);
   const [outputToken, setOutputToken] = useState(inputToken.pairs[0]);
@@ -22,18 +22,27 @@ export default function Swap() {
   const [outputValue, setOutputValue] = useState(0);
   const [balance, setBalance] = useState(7);
 
-
   const handleSwap = async (e) => {
     e.preventDefault();
-    if (outputValue){
+    if (outputValue) {
       setSwapping(true);
       try {
-        const result = await outputToken.swap(outputValue)
+        const updateInputCoin = update[inputToken.marker];
+        const updateOutputCoin = update[outputToken.marker];
+
+        const result = await outputToken.swap(outputValue);
+        console.log(Number(result) / Math.pow(10, 8));
+        updateInputCoin(
+          balances[inputToken.marker] -
+            Number(inputValue) -
+            Number(result) / Math.pow(10, 8)
+        );
+        updateOutputCoin(balances[outputToken.marker] + Number(outputValue));
         setDone(true);
         setSwapping(false);
       } catch (error) {
-        setError(error)
-      }finally{
+        setError(error);
+      } finally {
         setInputValue(0);
         setOutputValue(0);
       }
@@ -57,16 +66,14 @@ export default function Swap() {
     setOutputValue(e);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     // Ensure MiniPay provider is available
     if (window.ethereum && window.ethereum.isMiniPay) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
     } else {
       console.error("MiniPay provider not detected");
     }
-
-  },[])
-
+  }, []);
 
   useEffect(() => {
     setOutputToken(inputToken.pairs[0]);
@@ -113,7 +120,7 @@ export default function Swap() {
       </div>
 
       <div className="container-sm text-white">
-        <Header balance={balance.toFixed(2)} />
+        {/* <Header balance={balance.toFixed(2)} /> */}
         <div className="px-3 sm:px-0 lg:px-8 my-auto ">
           <div className="mx-auto max-w-md py-6 rounded-2xl opacity-70 bg-zinc-900">
             <div className="inline-flex justify-between w-full thin-border-b px-6 pb-6 border-white">
@@ -131,9 +138,9 @@ export default function Swap() {
                     onChange={(e) => handleInputToken(e)}
                   >
                     <div className="relative">
-                      <Listbox.Button className="relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                      <Listbox.Button className="relative w-full cursor-default rounded-lg py-2 pl-2 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                         <span className="block truncate">
-                          <div className="rounded-md p-2 grid grid-flow-col grid-cols-3 space-x-2 ps-1 pe-5 bg-zinc-800">
+                          <div className="items-center rounded-md p-1 grid grid-flow-col grid-cols-3 space-x-1 ps-1 pe-5 bg-zinc-800">
                             <div className="grid place-content-center">
                               <img
                                 src={inputToken.image}
@@ -141,6 +148,11 @@ export default function Swap() {
                                 srcSet=""
                                 className="my-auto rounded-full"
                               />
+                            </div>
+                            <div className="">
+                              <p className="text-xs">
+                                {balances[inputToken.marker].toFixed(2)}
+                              </p>
                             </div>
                             <div className="col-span-2">
                               <p className="text-sm">To Token</p>
@@ -226,9 +238,9 @@ export default function Swap() {
                     onChange={(e) => handleOutputToken(e)}
                   >
                     <div className="relative z-0">
-                      <Listbox.Button className="relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                      <Listbox.Button className="relative w-full cursor-default rounded-lg py-2 pl-2 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                         <span className="block truncate">
-                          <div className="rounded-md p-2 grid grid-flow-col grid-cols-3 space-x-2 ps-1 pe-5 bg-zinc-800">
+                          <div className="items-center rounded-md p-2 grid grid-flow-col grid-cols-3 space-x-1 ps-1 pe-5 bg-zinc-800">
                             <div className="grid place-content-center">
                               <img
                                 src={outputToken.image}
@@ -236,6 +248,11 @@ export default function Swap() {
                                 srcSet=""
                                 className="my-auto rounded-full"
                               />
+                            </div>
+                            <div className="">
+                              <p className="text-xs">
+                                {balances[outputToken.marker].toFixed(2)}
+                              </p>
                             </div>
                             <div className="col-span-2">
                               <p className="text-sm">To Token</p>
@@ -324,7 +341,7 @@ export default function Swap() {
                   >
                     Swap
                   </button>
-                ) : !done? (
+                ) : !done ? (
                   <button
                     disabled={true}
                     role="submit"
@@ -333,7 +350,7 @@ export default function Swap() {
                   >
                     <CheckIcon className="h-5 w-5 mx-auto" />
                   </button>
-              ):(
+                ) : (
                   <button
                     href="#"
                     disabled={true}
@@ -359,16 +376,19 @@ export default function Swap() {
                       <span className="sr-only">Loading...</span>
                     </div>
                   </button>
-                  ) }
+                )}
               </div>
 
-             { error?.length && <div className="mt-4">
-              <p className="text-white bg-zinc-800 px-3 py-1 rounded-2xl inline-flex text-xs border border-red-600">
-          <span className="text-red-600 font-bold mx-1 text-xs">
-            Error:          </span>{" "}
-          {error}
-        </p>
-              </div>}
+              {error?.length && (
+                <div className="mt-4">
+                  <p className="text-white bg-zinc-800 px-3 py-1 rounded-2xl inline-flex text-xs border border-red-600">
+                    <span className="text-red-600 font-bold mx-1 text-xs">
+                      Error:{" "}
+                    </span>{" "}
+                    {error}
+                  </p>
+                </div>
+              )}
             </form>
           </div>
         </div>

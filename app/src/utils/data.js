@@ -38,14 +38,69 @@ const cEURO = {
 
 const eXOF = {
   marker: "cXOF",
-  image:
-    "https://app.mento.org/_next/static/media/eXOF.96a9bf26.svg",
+  image: "https://app.mento.org/_next/static/media/eXOF.96a9bf26.svg",
 };
 
 const cREAL = {
   marker: "cREAL",
   image:
     "https://assets.coingecko.com/coins/images/27205/standard/creal.png?1696526254",
+};
+
+export const balances = {
+  Celo: 7,
+  cUSD: 0,
+  cEUR: 0,
+  cXOF: 0,
+  cREAL: 0,
+};
+
+/**
+ *
+ * @param {number} balance
+ */
+export async function updateCeloBalance(balance) {
+  balances["Celo"] = balance;
+}
+
+/**
+ *
+ * @param {number} balance
+ */
+export async function updateCUSDBalance(balance) {
+  balances["cUSD"] = balance;
+}
+
+/**
+ *
+ * @param {number} balance
+ */
+export async function updateCEURBalance(balance) {
+  balances["cEUR"] = balance;
+}
+
+/**
+ *
+ * @param {number} balance
+ */
+export async function updateCXOFBalance(balance) {
+  balances["cXOF"] = balance;
+}
+
+/**
+ *
+ * @param {number} balance
+ */
+export async function updateCREALBalance(balance) {
+  balances["cREAL"] = balance;
+}
+
+export const update = {
+  Celo: updateCeloBalance,
+  cUSD: updateCUSDBalance,
+  cEUR: updateCEURBalance,
+  cXOF: updateCXOFBalance,
+  cREAL: updateCREALBalance,
 };
 
 export const contracts = [
@@ -76,8 +131,7 @@ export const contracts = [
   },
   {
     marker: "cXOF",
-    image:
-    "https://app.mento.org/_next/static/media/eXOF.96a9bf26.svg",
+    image: "https://app.mento.org/_next/static/media/eXOF.96a9bf26.svg",
     pairs: [{ ...Celo, getQuote: geteXOFtoCeloQuote, swap: swapeXOFtoCelo }],
   },
   {

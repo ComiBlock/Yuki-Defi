@@ -1,4 +1,4 @@
-import { Wallet, providers, utils } from "ethers";
+import { Wallet, providers, utils, BigNumber } from "ethers";
 
 import { Mento } from "@mento-protocol/mento-sdk";
 
@@ -207,8 +207,7 @@ export async function getCelotoCUSDQuote(amount) {
   return utils.formatUnits(quoteAmountOut);
 }
 
-export async function getCUSDtoCeloQuote(amount){
-
+export async function getCUSDtoCeloQuote(amount) {
   const provider = new providers.JsonRpcProvider(
     "https://alfajores-forno.celo-testnet.org"
   );
@@ -234,10 +233,7 @@ export async function getCUSDtoCeloQuote(amount){
   );
 
   return utils.formatUnits(quoteAmountOut);
-
 }
-
-
 
 /*
 
@@ -289,9 +285,17 @@ export async function swapCelotoCUSD(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed;
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
+  } catch (error) {
+    console.log("error: ", error);
+  }
 }
 
 export async function swapCUSDtoCelo(amount) {
@@ -339,9 +343,17 @@ export async function swapCUSDtoCelo(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed;
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
+  } catch (error) {
+    console.log("error: ", error);
+  }
 }
 
 /*
@@ -395,9 +407,17 @@ export async function swapCelotocEUR(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed;
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
+  } catch (error) {
+    console.log("error", error);
+  }
 }
 
 export async function swapcEURToCelo(amount) {
@@ -445,9 +465,17 @@ export async function swapcEURToCelo(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed;
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
+  } catch (error) {
+    console.log("error", error);
+  }
 }
 
 /*
@@ -501,9 +529,17 @@ export async function swapCelotoeXOF(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed;
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
+  } catch (error) {
+    console.log("error", error);
+  }
 }
 
 export async function swapeXOFtoCelo(amount) {
@@ -551,9 +587,17 @@ export async function swapeXOFtoCelo(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed;
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
+  } catch (error) {
+    console.log("error", error);
+  }
 }
 
 /*
@@ -607,9 +651,17 @@ export async function swapCelotocREAL(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed;
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
+  } catch (error) {
+    console.log("error: ", error);
+  }
 }
 
 export async function swapcREALtoCelo(amount) {
@@ -657,9 +709,17 @@ export async function swapcREALtoCelo(amount) {
     amountIn,
     expectedAmountOut
   );
-  const swapTx = await signer.sendTransaction(swapTxObj);
-  const swapTxReceipt = await swapTx.wait();
-  console.log("tx receipt: ", swapTxReceipt);
+  try {
+    const swapTx = await signer.sendTransaction(swapTxObj);
+    const swapTxReceipt = await swapTx.wait();
+    console.log("tx receipt: ", swapTxReceipt);
+    const gasUsed = await swapTxReceipt.gasUsed;
+    const gasValue = BigNumber.from(gasUsed).toString();
+    console.log("gas value: ", gasValue);
+    return gasValue;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 //getCelotocREALQuote(10)
